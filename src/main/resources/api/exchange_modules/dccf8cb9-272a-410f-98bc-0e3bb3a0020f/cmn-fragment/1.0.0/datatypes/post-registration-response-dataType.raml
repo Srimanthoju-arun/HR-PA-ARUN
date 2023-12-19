@@ -1,0 +1,17 @@
+#%RAML 1.0 DataType
+type: object
+properties:
+  registrationResonse:
+    type: object
+    required: true
+    properties:
+      eventInstanceId:
+        type: string
+        required: true
+        example: "fdgdgdgdfgdgdfgdfgdfgd"
+      status:
+        type: string
+        required: true
+        enum:
+          - Success
+          - Failure

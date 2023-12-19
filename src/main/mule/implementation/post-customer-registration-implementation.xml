@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	
+	<flow name="post-customer-registration-implementation-Flow" doc:id="128d0ec1-bc52-4c6b-bc92-5692c1caee60" >
+	<ee:transform doc:name="Transform Message" doc:id="ef0db97f-e2cc-4e40-99a9-547af1e5dd74" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[{
+    "contactType__c": payload.registrationRequest.contactTpe,
+    "countrycode__c": payload.registrationRequest.countrycode,
+    "mobile__c": payload.registrationRequest.mobile,
+    "email__c": payload.registrationRequest.email,
+    "password__c": payload.registrationRequest.password,
+    "acceptDataPolicy__c": if(payload.registrationRequest.acceptDataPolicy == true) ("true")else("false"),
+    "recieveNews__c": if(payload.registrationRequest.recieveNews == true) ("true")else("false"),
+    "acceptPIC__c": if(payload.registrationRequest.acceptPIC == true)("true")else("false"),
+    "locale__c": payload.registrationRequest.locale,
+    "captchatoken__c": payload.registrationRequest.capthaToken,
+    "recieveClaimsettle__c": if(payload.registrationRequest.recieveClaimSettle == true) ("true")else("false")
+  }]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce:create doc:name="Create" doc:id="05be8bc8-c9f0-4f3b-b243-afad264081d0" config-ref="Salesforce_Config" type="registration__c"/>
+		<ee:transform>
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+  registrationResonse: {
+    eventInstanceId: "fdgdgdgdfgdgdfgdfgdfgd",
+    status: "Success"
+  }
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+	
+	</flow>
+</mule>
