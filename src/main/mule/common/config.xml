@@ -11,9 +11,11 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 	 <http:listener-config name="api-httpListenerConfig">
         <http:listener-connection host="${http.listener.host}" port="${http.listener.port}" />
     </http:listener-config>
-    <apikit:config name="api-config" api="api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="api-config" api="api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" parser="RAML">
+	</apikit:config>
 	<configuration-properties doc:name="Configuration properties" doc:id="b0b81c17-a4cc-4e69-bb51-8ece2c518a1f" file="properties/${env}.yaml" />
 	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="a20ca9e3-9a79-4957-a05f-81f62386d6e1" >
 		<salesforce:basic-connection username="${sfdc.username}" password="${sfdc.password}" securityToken="${sfdc.securityToken}" />
-	</salesforce:sfdc-config>	
+	</salesforce:sfdc-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="57247d90-ed5c-45c3-b8fa-65a0cdb25d14" file="properties\constraints\errordetails.yaml" />	
 </mule>
